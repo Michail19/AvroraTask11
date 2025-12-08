@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+X-Nemo-Application-Type=silica-qt5
+Icon=ru.template.Threads
+Exec=/usr/bin/ru.template.Threads
+Name=Threads
+Name[ru]=Threads
+
+[X-Application]
+Permissions=Internet
+OrganizationName=ru.template
+ApplicationName=Threads
+ExecDBus=/usr/bin/ru.template.Threads

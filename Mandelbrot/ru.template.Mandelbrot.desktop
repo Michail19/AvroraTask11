@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+X-Nemo-Application-Type=silica-qt5
+Icon=ru.template.Mandelbrot
+Exec=/usr/bin/ru.template.Mandelbrot
+Name=Mandelbrot
+Name[ru]=Mandelbrot
+
+[X-Application]
+Permissions=Internet
+OrganizationName=ru.template
+ApplicationName=Mandelbrot
+ExecDBus=/usr/bin/ru.template.Mandelbrot
