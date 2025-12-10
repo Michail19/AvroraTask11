@@ -8,57 +8,59 @@ Page {
     allowedOrientations: Orientation.All
 
     WorkerScript {
-            id: myWorker
-            source: "../assets/workerscript.js"
+        id: rowWorker
+        source: "../assets/workerscript.js"
+        onMessage: resultRow.text = "Row result: " + messageObject.result
+    }
 
-            onMessage: {
-                if (messageObject.row === rowSpinner.value && messageObject.column === columnSpinner.value){
-                    if (messageObject.result === -1)
-                        resultText.text = "Column must be <= Row";
-                    else
-                        resultText.text = messageObject.result;
-                }
-            }
-        }
-        Row {
-            id: row
-            anchors.top: parent.top
-            anchors.margins: 25
-            spacing: 24
-            anchors.horizontalCenter: parent.horizontalCenter
-            Spinner {
-                id: rowSpinner
-                label: "Row"
-                onValueChanged: {
-                    resultText.text = "Loading...";
-                    myWorker.sendMessage( { row: rowSpinner.value, column: columnSpinner.value } );
-                }
-            }
+    WorkerScript {
+        id: columnWorker
+        source: "../assets/workerscript.js"
+        onMessage: resultColumn.text = "Column result: " + messageObject.result
+    }
 
-            Spinner {
-                id: columnSpinner
-                label: "Column"
-                onValueChanged: {
-                    resultText.text = "Loading...";
-                    myWorker.sendMessage( { row: rowSpinner.value, column: columnSpinner.value } );
-                }
-            }
+    Component.onCompleted: {
+        rowWorker.sendMessage({ n: rowSpinner.value });
+        columnWorker.sendMessage({ n: columnSpinner.value });
+    }
+
+    Row {
+        id: row
+        anchors.top: parent.top
+        anchors.margins: 25
+        spacing: 24
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        Spinner {
+            id: rowSpinner
+            label: "Row"
+            onValueChanged: rowWorker.sendMessage({ n: rowSpinner.value })
         }
 
-        Text {
-            id: resultText
-            anchors.top: row.bottom
-            anchors.margins: 25
-            width: parent.width
-            horizontalAlignment: Text.AlignHCenter
-            wrapMode: Text.WordWrap
-            font.pixelSize: 54
-            color: "white"
+        Spinner {
+            id: columnSpinner
+            label: "Column"
+            onValueChanged: columnWorker.sendMessage({ n: columnSpinner.value })
         }
+    }
 
-        Text {
-            text: "Pascal's Triangle Calculator"
-            anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom; bottomMargin: 50 }
-            color: "white"
-        }
+    Text {
+        id: resultRow
+        anchors.top: row.bottom
+        anchors.topMargin: 25
+        anchors.horizontalCenter: parent.horizontalCenter
+        font.pixelSize: 40
+        color: "white"
+        text: "Row: -"
+    }
+
+    Text {
+        id: resultColumn
+        anchors.top: resultRow.bottom
+        anchors.topMargin: 10
+        anchors.horizontalCenter: parent.horizontalCenter
+        font.pixelSize: 40
+        color: "white"
+        text: "Column: -"
+    }
 }
